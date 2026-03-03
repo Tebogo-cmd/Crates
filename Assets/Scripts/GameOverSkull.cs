@@ -21,7 +21,7 @@ public class GameOverSkull : MonoBehaviour
     void Update()
     {
         if(lockedIn)
-        transform.Rotate(Vector3.up*Time.deltaTime, 0.8f);
+        transform.Rotate(Vector3.up*Time.deltaTime, 0.1f);
     }
     
 

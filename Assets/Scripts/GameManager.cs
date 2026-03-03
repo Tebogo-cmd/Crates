@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour
     public bool isGameOver = false;
     private bool gameOverScreenShown = false;
     public GameObject titleScreen;
-
+    private Coroutine TimerCoroutine;
     private AudioSource audioSourceSFX;
     private AudioSource audioSourceBackground;
     public AudioClip[] sounds = new AudioClip[4]; //0-> modeSelection 1->TargetCollision 2->ExplosionSound 3->backgroundSound
@@ -77,7 +77,7 @@ public class GameManager : MonoBehaviour
         if (timerToggle.isOn)
         {
             timerTxt.gameObject.SetActive(true);
-            StartCoroutine(CountDown());
+           TimerCoroutine= StartCoroutine(CountDown());
         }
 
         UpdateScore(0);
@@ -105,6 +105,7 @@ public class GameManager : MonoBehaviour
         isGameOver = true;
         Instantiate(gameOverScreen); //show the gameOver Animation
         gameOverScreenShown = true;
+        StopCoroutine(TimerCoroutine);
         StartCoroutine(waitThenShowRestart());
 
     }
