@@ -17,7 +17,10 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI scoreTxt;
     public TextMeshProUGUI pointText;
     public TextMeshProUGUI ScoreTMP;
+    public TextMeshProUGUI timerTxt;
+    private int timer = 4;
     public Slider slider;
+    public Toggle timerToggle;
     public Button restartButton;
     public GameObject gameOverScreen;
     private float defaultFontSize;
@@ -71,6 +74,12 @@ public class GameManager : MonoBehaviour
             }
         }
 
+        if (timerToggle.isOn)
+        {
+            timerTxt.gameObject.SetActive(true);
+            StartCoroutine(CountDown());
+        }
+
         UpdateScore(0);
         StartCoroutine(SpawnTarget());
     }
@@ -86,12 +95,38 @@ public class GameManager : MonoBehaviour
     {
         if (Score <= -20 && !gameOverScreenShown)
         {
-            isGameOver = true;
-            Instantiate(gameOverScreen); //show the gameOver Animation
-            gameOverScreenShown = true;
-            StartCoroutine(waitThenShowRestart());
-            
+            GameOver();
         }
+    }
+
+
+    void GameOver()
+    {
+        isGameOver = true;
+        Instantiate(gameOverScreen); //show the gameOver Animation
+        gameOverScreenShown = true;
+        StartCoroutine(waitThenShowRestart());
+
+    }
+
+
+    IEnumerator CountDown()
+    {
+        while (true)
+        {
+            if (timer == 0)
+                break;
+            else
+            {
+                
+                yield return new WaitForSeconds(1);
+                --timer;
+                timerTxt.text = "Timer: " + timer;
+            }
+
+        }
+
+        GameOver();
     }
 
     IEnumerator waitThenShowRestart()
