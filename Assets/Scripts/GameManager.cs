@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI pointText;
     public TextMeshProUGUI ScoreTMP;
     public TextMeshProUGUI timerTxt;
-    private int timer = 4;
+    private int timer = 60;
     public Slider slider;
     public Toggle timerToggle;
     public Button restartButton;
