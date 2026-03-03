@@ -1,10 +1,11 @@
-using System.Collections.Generic;
-using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
+using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using Unity.VisualScripting;
 
 
 public class GameManager : MonoBehaviour
@@ -16,6 +17,7 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI scoreTxt;
     public TextMeshProUGUI pointText;
     public TextMeshProUGUI ScoreTMP;
+    public Slider slider;
     public Button restartButton;
     public GameObject gameOverScreen;
     private float defaultFontSize;
@@ -23,8 +25,12 @@ public class GameManager : MonoBehaviour
     private bool gameOverScreenShown = false;
     public GameObject titleScreen;
 
-    private Coroutine animationController;
+    private AudioSource audioSourceSFX;
+    private AudioSource audioSourceBackground;
+    public AudioClip[] sounds = new AudioClip[4]; //0-> modeSelection 1->TargetCollision 2->ExplosionSound 3->backgroundSound
 
+    private Coroutine animationController;
+    public float soundVolume = 0;
     public Dictionary<string, Color> canvasColors = new()
     {
         {"Addition", new Color(0.2f,0.8f,0.2f,1f) },
@@ -34,8 +40,13 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         defaultFontSize = pointText.fontSize;
-       
-     
+        audioSourceSFX = GetComponent<AudioSource>();
+        audioSourceBackground = gameObject.AddComponent<AudioSource>();
+        soundVolume = slider.value;
+        audioSourceBackground.clip = sounds[3];
+        audioSourceBackground.loop = true;
+        audioSourceBackground.volume = slider.value ;
+        audioSourceBackground.Play();
     }
 
     public void StartGame(int difficulty)
@@ -62,6 +73,12 @@ public class GameManager : MonoBehaviour
 
         UpdateScore(0);
         StartCoroutine(SpawnTarget());
+    }
+
+    public void ChangeVolume()
+    {
+        soundVolume = slider.value;
+        audioSourceBackground.volume = slider.value;
     }
 
     // Update is called once per frame
@@ -140,6 +157,22 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
+   
+
+    public void PlayAudio(int index)//0-> modeSelection 1->TargetCollision 2->ExplosionSound
+    {
+        switch (index)
+        {
+            case 0: audioSourceSFX.PlayOneShot(sounds[0], soundVolume);
+                break;
+            case 1: audioSourceSFX.PlayOneShot(sounds[1], soundVolume);
+                break;
+            case 2: audioSourceSFX.PlayOneShot(sounds[2], soundVolume);
+                break;
+            default: Debug.Log($"Requested audio sound Index: {index} Not found!\n. Number of sounds: {sounds.Length} available");
+                break;
+        }
+    }
 
 
 

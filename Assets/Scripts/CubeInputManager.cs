@@ -118,7 +118,7 @@ public class CubeEraser : MonoBehaviour
        gameManagerScript.showAnimation();
         Destroy(other.gameObject);
         Instantiate(explosionParticle[particleIndex], transform.position, transform.rotation);
-
+        gameManagerScript.PlayAudio(2);
     }
 
 

@@ -27,7 +27,7 @@ public class DifficultyButton : MonoBehaviour
     {
       
         gameManagerScript.StartGame(difficultyLevel);
-
+        gameManagerScript.PlayAudio(0);
 
     }
 }

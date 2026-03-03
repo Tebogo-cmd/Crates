@@ -48,6 +48,17 @@ public class Target : MonoBehaviour
 
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+
+        if (collision.gameObject.layer == 3)   //targets
+        {
+         
+            gameManagerScript.PlayAudio(1);
+        }
+
+    }
+
 
     float random()
     {
